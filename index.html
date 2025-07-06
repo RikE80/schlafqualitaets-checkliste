@@ -1,0 +1,783 @@
+gefügter Inhalt
+28.92 KB •779 Zeilen
+•
+Die Formatierung kann von der Quelle abweichen
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schlafqualitäts-Checkliste</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card span {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .stat-card .value {
+            font-weight: bold;
+            color: #3b82f6;
+            margin-left: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+        }
+
+        .category {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .category-header {
+            color: white;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .category-header.rhythm { background: #3b82f6; }
+        .category-header.digital { background: #8b5cf6; }
+        .category-header.environment { background: #10b981; }
+        .category-header.nutrition { background: #f59e0b; }
+        .category-header.relaxation { background: #ef4444; }
+        .category-header.movement { background: #14b8a6; }
+        .category-header.supplements { background: #6366f1; }
+
+        .category-content {
+            padding: 20px;
+        }
+
+        .item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .item:hover {
+            background: #f8fafc;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .checkbox.checked {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .item-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.4;
+        }
+
+        .item-text.checked {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .weekly-goal-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .weekly-goal-btn:hover {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .weekly-goal-btn.active {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .weekly-goal-tag {
+            display: inline-block;
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+
+        .weekly-goals {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .weekly-goals h2 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .weekly-goals-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .weekly-goal-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .weekly-goal-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .goal-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .goal-indicator.rhythm { background: #3b82f6; }
+        .goal-indicator.digital { background: #8b5cf6; }
+        .goal-indicator.environment { background: #10b981; }
+        .goal-indicator.nutrition { background: #f59e0b; }
+        .goal-indicator.relaxation { background: #ef4444; }
+        .goal-indicator.movement { background: #14b8a6; }
+        .goal-indicator.supplements { background: #6366f1; }
+
+        .goal-text {
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+        .goal-category {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .remove-goal {
+            color: #ef4444;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .remove-goal:hover {
+            background: #fef2f2;
+        }
+
+        .tips {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .tips h3 {
+            color: #1e293b;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .tips ul {
+            list-style: none;
+            color: #64748b;
+        }
+
+        .tips li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Schlafqualitäts-Checkliste</h1>
+            <p>Verbessern Sie Ihre Schlafqualität Schritt für Schritt</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <span>Fortschritt:</span>
+                    <span class="value" id="progress">0/26 (0%)</span>
+                </div>
+                <div class="stat-card">
+                    <span>Wochenziele:</span>
+                    <span class="value" id="weekly-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="toggle-view">Wochenziele anzeigen</button>
+            <button class="btn btn-secondary" id="reset-btn">🔄 Zurücksetzen</button>
+        </div>
+
+        <div class="weekly-goals hidden" id="weekly-goals">
+            <h2>Ihre Wochenziele</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">
+                Empfehlung: Wählen Sie 2-3 Punkte pro Woche aus und beobachten Sie Ihre Fortschritte.
+            </p>
+            <div class="weekly-goals-list" id="weekly-goals-list">
+                <p style="color: #9ca3af; font-style: italic;">
+                    Noch keine Wochenziele ausgewählt. Klicken Sie auf das + Symbol neben den Punkten, die Sie diese Woche umsetzen möchten.
+                </p>
+            </div>
+        </div>
+
+        <div class="categories" id="categories">
+            <div class="category">
+                <div class="category-header rhythm">
+                    <span>🌙</span>
+                    <span>Schlafrhythmus</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="rhythm" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Tägliche Schlaf- und Aufstehzeiten einhalten -- auch am Wochenende</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="rhythm" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Morgens direkt ans Tageslicht gehen (Fenster oder draußen)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="rhythm" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">90 Minuten vor dem Schlaf keine neuen Aufgaben oder Diskussionen</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header digital">
+                    <span>📱</span>
+                    <span>Digitale Reize</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="digital" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">60 Minuten vor dem Schlaf keine Bildschirme mehr verwenden</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="digital" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Blaulichtfilter auf allen Geräten aktivieren</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="digital" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">WLAN und Handy nachts in den Flugmodus oder ausschalten</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="digital" data-index="3">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Nachrichten und Social Media ab 20 Uhr vermeiden</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header environment">
+                    <span>🏠</span>
+                    <span>Licht & Umgebung</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="environment" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Abends nur noch warmes, gedimmtes Licht nutzen</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="environment" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Schlafzimmer vollständig abdunkeln (ggf. Schlafmaske verwenden)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="environment" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Raumtemperatur auf 16--18 °C einstellen</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="environment" data-index="3">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Nur schlafen im Bett -- kein Fernsehen oder Arbeiten</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header nutrition">
+                    <span>☕</span>
+                    <span>Ernährung & Stoffe</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="nutrition" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Letzte Mahlzeit 2--3 Stunden vor dem Zubettgehen einnehmen</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="nutrition" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Kein Koffein nach 14 Uhr (auch Cola, grüner Tee, Schokolade)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="nutrition" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Alkohol meiden oder deutlich reduzieren</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="nutrition" data-index="3">
+                        <div class="checkbox"></div>
+                        <div class="item-text">2,5 Liter Wasser tagsüber trinken -- abends weniger</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header relaxation">
+                    <span>❤️</span>
+                    <span>Entspannung & Nervensystem</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="relaxation" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">10 Minuten Abendritual einführen (z. B. Lesen, Musik, Meditation)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="relaxation" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">4-7-8-Atemtechnik vor dem Einschlafen anwenden</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="relaxation" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Warmes Fußbad oder warme Dusche ca. 1 Stunde vor dem Schlaf</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="relaxation" data-index="3">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Dankbarkeitstagebuch: 3 Dinge notieren, für die Sie dankbar sind</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header movement">
+                    <span>🏃</span>
+                    <span>Bewegung & Erdung</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="movement" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Mindestens 20 Minuten Bewegung pro Tag (z. B. Spaziergang)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="movement" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Täglich mindestens 15 Minuten im natürlichen Tageslicht verbringen</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="movement" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Barfuß auf natürlichem Untergrund laufen oder Erdungsmatte nutzen</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category">
+                <div class="category-header supplements">
+                    <span>➕</span>
+                    <span>Optional: Ergänzungen & Biohacks</span>
+                </div>
+                <div class="category-content">
+                    <div class="item" data-category="supplements" data-index="0">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Magnesium abends einnehmen (z. B. Glycinat)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="supplements" data-index="1">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Adaptogene wie Ashwagandha gezielt einsetzen (nach Rücksprache)</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="supplements" data-index="2">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Melatonin nur individuell dosiert und in Absprache anwenden</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                    <div class="item" data-category="supplements" data-index="3">
+                        <div class="checkbox"></div>
+                        <div class="item-text">Intervallfasten (z. B. 16:8) bei guter Verträglichkeit integrieren</div>
+                        <button class="weekly-goal-btn">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tips">
+            <h3>Hinweise zur Anwendung</h3>
+            <ul>
+                <li>Wählen Sie pro Woche nur 2-3 Punkte aus, um sich nicht zu überfordern</li>
+                <li>Beobachten Sie Ihre Fortschritte und passen Sie die Maßnahmen an Ihre Bedürfnisse an</li>
+                <li>Konsistenz ist wichtiger als Perfektion - bleiben Sie dran!</li>
+                <li>Bei Ergänzungen und Biohacks sollten Sie vorher Rücksprache mit einem Experten halten</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let checkedItems = {};
+        let weeklyGoals = [];
+        let showingWeeklyGoals = false;
+
+        // Category names mapping
+        const categoryNames = {
+            rhythm: 'Schlafrhythmus',
+            digital: 'Digitale Reize',
+            environment: 'Licht & Umgebung',
+            nutrition: 'Ernährung & Stoffe',
+            relaxation: 'Entspannung & Nervensystem',
+            movement: 'Bewegung & Erdung',
+            supplements: 'Optional: Ergänzungen & Biohacks'
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            bindEvents();
+            updateStats();
+        });
+
+        function bindEvents() {
+            // Checkbox clicks
+            document.querySelectorAll('.checkbox').forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    const item = this.closest('.item');
+                    const category = item.dataset.category;
+                    const index = item.dataset.index;
+                    const key = `${category}-${index}`;
+                    
+                    checkedItems[key] = !checkedItems[key];
+                    updateCheckbox(this, checkedItems[key]);
+                    updateItemText(item, checkedItems[key]);
+                    updateStats();
+                });
+            });
+
+            // Weekly goal buttons
+            document.querySelectorAll('.weekly-goal-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const item = this.closest('.item');
+                    const category = item.dataset.category;
+                    const index = item.dataset.index;
+                    const key = `${category}-${index}`;
+                    
+                    if (!weeklyGoals.includes(key)) {
+                        weeklyGoals.push(key);
+                        this.classList.add('active');
+                        addWeeklyGoalTag(item);
+                        updateWeeklyGoalsList();
+                        updateStats();
+                    }
+                });
+            });
+
+            // Control buttons
+            document.getElementById('toggle-view').addEventListener('click', toggleView);
+            document.getElementById('reset-btn').addEventListener('click', resetAll);
+        }
+
+        function updateCheckbox(checkbox, checked) {
+            if (checked) {
+                checkbox.classList.add('checked');
+            } else {
+                checkbox.classList.remove('checked');
+            }
+        }
+
+        function updateItemText(item, checked) {
+            const text = item.querySelector('.item-text');
+            if (checked) {
+                text.classList.add('checked');
+            } else {
+                text.classList.remove('checked');
+            }
+        }
+
+        function addWeeklyGoalTag(item) {
+            const text = item.querySelector('.item-text');
+            if (!text.querySelector('.weekly-goal-tag')) {
+                const tag = document.createElement('div');
+                tag.className = 'weekly-goal-tag';
+                tag.textContent = 'Wochenziel';
+                text.appendChild(tag);
+            }
+        }
+
+        function removeWeeklyGoalTag(item) {
+            const tag = item.querySelector('.weekly-goal-tag');
+            if (tag) {
+                tag.remove();
+            }
+        }
+
+        function updateStats() {
+            const totalItems = document.querySelectorAll('.item').length;
+            const checkedCount = Object.values(checkedItems).filter(Boolean).length;
+            const percentage = Math.round((checkedCount / totalItems) * 100);
+            
+            document.getElementById('progress').textContent = `${checkedCount}/${totalItems} (${percentage}%)`;
+            document.getElementById('weekly-count').textContent = weeklyGoals.length;
+        }
+
+        function updateWeeklyGoalsList() {
+            const list = document.getElementById('weekly-goals-list');
+            
+            if (weeklyGoals.length === 0) {
+                list.innerHTML = '<p style="color: #9ca3af; font-style: italic;">Noch keine Wochenziele ausgewählt. Klicken Sie auf das + Symbol neben den Punkten, die Sie diese Woche umsetzen möchten.</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            weeklyGoals.forEach(key => {
+                const [category, index] = key.split('-');
+                const item = document.querySelector(`[data-category="${category}"][data-index="${index}"]`);
+                const itemText = item.querySelector('.item-text').textContent.replace('Wochenziel', '').trim();
+                
+                const goalItem = document.createElement('div');
+                goalItem.className = 'weekly-goal-item';
+                goalItem.innerHTML = `
+                    <div class="weekly-goal-content">
+                        <div class="goal-indicator ${category}"></div>
+                        <div>
+                            <div class="goal-text">${itemText}</div>
+                            <div class="goal-category">${categoryNames[category]}</div>
+                        </div>
+                    </div>
+                    <button class="remove-goal" data-key="${key}">Entfernen</button>
+                `;
+                
+                list.appendChild(goalItem);
+            });
+
+            // Bind remove buttons
+            document.querySelectorAll('.remove-goal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const key = this.dataset.key;
+                    removeWeeklyGoal(key);
+                });
+            });
+        }
+
+        function removeWeeklyGoal(key) {
+            weeklyGoals = weeklyGoals.filter(goal => goal !== key);
+            
+            // Update UI
+            const [category, index] = key.split('-');
+            const item = document.querySelector(`[data-category="${category}"][data-index="${index}"]`);
+            const btn = item.querySelector('.weekly-goal-btn');
+            btn.classList.remove('active');
+            removeWeeklyGoalTag(item);
+            
+            updateWeeklyGoalsList();
+            updateStats();
+        }
+
+        function toggleView() {
+            const weeklyGoalsDiv = document.getElementById('weekly-goals');
+            const categoriesDiv = document.getElementById('categories');
+            const toggleBtn = document.getElementById('toggle-view');
+            
+            showingWeeklyGoals = !showingWeeklyGoals;
+            
+            if (showingWeeklyGoals) {
+                weeklyGoalsDiv.classList.remove('hidden');
+                categoriesDiv.classList.add('hidden');
+                toggleBtn.textContent = 'Checkliste anzeigen';
+                updateWeeklyGoalsList();
+            } else {
+                weeklyGoalsDiv.classList.add('hidden');
+                categoriesDiv.classList.remove('hidden');
+                toggleBtn.textContent = 'Wochenziele anzeigen';
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Möchten Sie wirklich alle Fortschritte zurücksetzen?')) {
+                checkedItems = {};
+                weeklyGoals = [];
+                
+                //
